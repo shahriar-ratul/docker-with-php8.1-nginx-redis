@@ -11,9 +11,9 @@ services:
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
-    container_name: nginx
+    container_name: nginx_sqft
     ports:
-      - 80:80
+      - 8000:80
     volumes:
       - ./:/var/www/html:delegated
     depends_on:
@@ -26,11 +26,11 @@ services:
 
   mysql:
     image: mariadb:10.6
-    container_name: mysql
+    container_name: mysql_sqft
     restart: unless-stopped
     tty: true
     ports:
-      - 3306:3306
+      - 8100:3306
     environment:
       MYSQL_DATABASE: laravel
       MYSQL_USER: root
@@ -48,7 +48,7 @@ services:
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
-    container_name: php
+    container_name: php_sqft
     volumes:
       - ./:/var/www/html:delegated
     networks:
@@ -56,10 +56,10 @@ services:
 
   redis:
     image: redis:alpine
-    container_name: redis
+    container_name: redis_sqft
     restart: unless-stopped
     ports:
-      - 6379:6379
+      - 8400:6379
     networks:
       - laravel
 
@@ -70,7 +70,7 @@ services:
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
-    container_name: composer
+    container_name: composer_sqft
     volumes:
       - ./:/var/www/html
     working_dir: /var/www/html
@@ -83,12 +83,12 @@ services:
 
   npm:
     image: node:13.7
-    container_name: npm
+    container_name: npm_sqft
     volumes:
       - ./:/var/www/html
     ports:
-      - 3000:3000
-      - 3001:3001
+      - 9000:3000
+      - 9001:3001
     working_dir: /var/www/html
     entrypoint: ['npm']
     networks:
@@ -101,7 +101,7 @@ services:
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
-    container_name: artisan
+    container_name: artisan_sqft
     volumes:
       - ./:/var/www/html:delegated
     depends_on:
@@ -113,9 +113,9 @@ services:
 
   mailhog:
     image: mailhog/mailhog:latest
-    container_name: mailhog
+    container_name: mailhog_sqft
     ports:
-      - 1025:1025
-      - 8025:8025
+      - 8500:1025
+      - 8525:8025
     networks:
       - laravel
